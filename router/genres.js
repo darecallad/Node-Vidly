@@ -1,5 +1,5 @@
 const express = require("express");
-const genres = express.Router();
+const router = express.Router();
 
 // obj movies
 const movies = [
@@ -7,11 +7,11 @@ const movies = [
   { id: 2, genre: "AA" },
 ];
 
-genres.get("/", (req, res) => {
+router.get("/", (req, res) => {
   res.send(movies);
 });
 
-genres.get("/:id", (req, res) => {
+router.get("/:id", (req, res) => {
   const movie = movies.find((m) => m.id === parseInt(req.params.id));
   if (!movie) return res.status(404).send("The movie does not exist");
 
@@ -20,7 +20,7 @@ genres.get("/:id", (req, res) => {
 
 // app.post
 
-genres.post("/", (req, res) => {
+router.post("/", (req, res) => {
   const movie = {
     id: movies.length + 1,
     genre: req.body.genre,
@@ -36,7 +36,7 @@ genres.post("/", (req, res) => {
 
 // app.put
 
-genres.put("/:id", (req, res) => {
+router.put("/:id", (req, res) => {
   const movie = movies.find((m) => m.id === parseInt(req.params.id));
   if (!movie) return res.status(404).send("Request 404");
 
@@ -59,7 +59,7 @@ function validateMovie(movie) {
 //app.delete
 //splice
 
-genres.delete("/:id", (req, res) => {
+router.delete("/:id", (req, res) => {
   const movie = movies.find((m) => m.id === parseInt(req.params.id));
 
   if (!movie) return res.status(404).send("The movie is not exist");
@@ -70,4 +70,4 @@ genres.delete("/:id", (req, res) => {
   res.send(movie);
 });
 
-module.exports = genres;
+module.exports = router;
