@@ -4,7 +4,8 @@ const router = express.Router();
 // obj movies
 const movies = [
   { id: 1, genre: "Action" },
-  { id: 2, genre: "AA" },
+  { id: 2, genre: "Horror" },
+  { id: 3, genre: "Romance" },
 ];
 
 router.get("/", (req, res) => {

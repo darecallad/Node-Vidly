@@ -8,7 +8,7 @@ const app = express();
 
 // app.post use
 app.use(express.json());
-app.use("/api/movies", genres);
+app.use("/api/genres", genres);
 app.use("/", home);
 // app.listen
 // environment viriables
