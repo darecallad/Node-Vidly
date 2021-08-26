@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const express = require("express");
+const Joi = require("joi");
 const router = express.Router();
 
 //create Schema
@@ -13,11 +14,11 @@ const genresSchema = new mongoose.Schema({
 });
 
 //create model
-const Genre = new mongoose.model("Genre", genresSchema);
+const Genre = mongoose.model("Genre", genresSchema);
 
 router.get("/", async (req, res) => {
-  const genres = await Genre.find().sort("name");
-  res.send(genres);
+  const genre = await Genre.find().sort("name");
+  res.send(genre);
 });
 
 router.get("/:id", async (req, res) => {
@@ -28,7 +29,7 @@ router.get("/:id", async (req, res) => {
   res.send(genre);
 });
 
-// app.post
+// app.post`
 
 router.post("/", async (req, res) => {
   //Validate
@@ -62,7 +63,7 @@ router.put("/:id", async (req, res) => {
 //validate function
 function validateGenre(genre) {
   const schema = {
-    genre: Joi.string().min(3).required(),
+    name: Joi.string().min(3).required(),
   };
   return Joi.validate(genre, schema);
 }
