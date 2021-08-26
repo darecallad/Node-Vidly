@@ -1,5 +1,5 @@
 const express = require("express");
-const Joi = require("joi");
+
 const genres = require("./router/genres");
 const home = require("./router/home");
 const mongoose = require("mongoose");
