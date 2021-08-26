@@ -1,15 +1,23 @@
+const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
 
-// obj movies
-const movies = [
-  { id: 1, genre: "Action" },
-  { id: 2, genre: "Horror" },
-  { id: 3, genre: "Romance" },
-];
+//create Schema
+const genresSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    minlength: 5,
+    maxlength: 50,
+  },
+});
 
-router.get("/", (req, res) => {
-  res.send(movies);
+//create model
+const Genre = new mongoose.model("Genre", genresSchema);
+
+router.get("/", async (req, res) => {
+  const genres = await Genre.find();
+  res.send(genres);
 });
 
 router.get("/:id", (req, res) => {
