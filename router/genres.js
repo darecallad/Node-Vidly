@@ -16,67 +16,70 @@ const genresSchema = new mongoose.Schema({
 const Genre = new mongoose.model("Genre", genresSchema);
 
 router.get("/", async (req, res) => {
-  const genres = await Genre.find();
+  const genres = await Genre.find().sort("name");
   res.send(genres);
 });
 
-router.get("/:id", (req, res) => {
-  const movie = movies.find((m) => m.id === parseInt(req.params.id));
-  if (!movie) return res.status(404).send("The movie does not exist");
+router.get("/:id", async (req, res) => {
+  const genre = await Genre.findById(req.params.id);
 
-  res.send(movie);
+  if (!genre) return res.status(404).send("The genre does not exist");
+
+  res.send(genre);
 });
 
 // app.post
 
-router.post("/", (req, res) => {
-  const movie = {
-    id: movies.length + 1,
-    genre: req.body.genre,
-  };
-
+router.post("/", async (req, res) => {
   //Validate
-  const { error } = validateMovie(req.body);
+  const { error } = validateGenre(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  movies.push(movies);
-  res.send(movie);
+  let genre = new Genre({ name: req.body.name });
+  genre = await genre.save();
+
+  res.send(genre);
 });
 
 // app.put
 
-router.put("/:id", (req, res) => {
-  const movie = movies.find((m) => m.id === parseInt(req.params.id));
-  if (!movie) return res.status(404).send("Request 404");
-
+router.put("/:id", async (req, res) => {
   //Validate
-  const { error } = validateMovie(req.body);
+  const { error } = validateGenre(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  movie.genre = req.body.genre;
-  res.send(movie);
+  const genre = await Genre.findByIdAndUpdate(
+    req.params.id,
+    { name: req.body.name },
+    { new: true }
+  );
+
+  if (!genre) return res.status(404).send("Request 404");
+
+  res.send(genre);
 });
 
 //validate function
-function validateMovie(movie) {
+function validateGenre(genre) {
   const schema = {
     genre: Joi.string().min(3).required(),
   };
-  return Joi.validate(movie, schema);
+  return Joi.validate(genre, schema);
 }
 
 //app.delete
 //splice
 
-router.delete("/:id", (req, res) => {
-  const movie = movies.find((m) => m.id === parseInt(req.params.id));
+router.delete("/:id", async (req, res) => {
+  const genre = await Genre.findByIdAndRemove(req.params.id);
 
-  if (!movie) return res.status(404).send("The movie is not exist");
+  if (!genre) return res.status(404).send("The genre is not exist");
 
-  const index = movies.indexOf(movie);
-  movies.splice(index, 1);
+  // const index = genres.indexOf(genre);
+  // genres.splice(index, 1);
+  // working with Array
 
-  res.send(movie);
+  res.send(genre);
 });
 
 module.exports = router;
