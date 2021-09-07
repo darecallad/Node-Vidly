@@ -1,5 +1,5 @@
 const express = require("express");
-const { Genre, validate } = require("../genre");
+const { Genre, validate } = require("../genres");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -61,4 +61,4 @@ router.delete("/:id", async (req, res) => {
   res.send(genre);
 });
 
-1;
+module.exports = router;

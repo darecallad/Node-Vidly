@@ -1,5 +1,7 @@
 const express = require("express");
-const genres = require("./router/genres");
+const genres = require("./router/genre");
+const movies = require("./router/movie");
+const rentals = require("./router/rental");
 const home = require("./router/home");
 const mongoose = require("mongoose");
 const app = express();
@@ -14,6 +16,8 @@ mongoose
 // app.post use
 app.use(express.json());
 app.use("/api/genres", genres);
+app.use("/api/movies", movies);
+app.use("/api/rentals", rentals);
 app.use("/", home);
 // app.listen
 // environment viriables
