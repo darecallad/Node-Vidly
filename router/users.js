@@ -1,3 +1,4 @@
+const _ = require("lodash");
 const express = require("express");
 const mongoose = require("mongoose");
 const { User, validateU } = require("../user");
@@ -15,18 +16,14 @@ router.post("/", async (req, res) => {
   let user = User.findOne({ email: req.body.email });
   if (user) return res.status(400).send("User already existed");
 
-  user = new User({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
-  });
-
+  user = new User(_.pick(req.body, ["name", "email", "password"]));
+  //joi-password-complexity
   await user.save();
-  res.send({
-    name: user.name,
-    email: user.email,
-  });
+
+  // lodash
+  const result = _.pick(user, ["name", "email"]);
+
+  res.send(result);
 });
-// lodash
 
 module.exports = router;
