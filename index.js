@@ -6,6 +6,7 @@ const movies = require("./router/movie");
 const rentals = require("./router/rental");
 const users = require("./router/users");
 const home = require("./router/home");
+const auth = require("./router/auth");
 const mongoose = require("mongoose");
 const app = express();
 // app.get, app.post, app.put, app.delete
@@ -22,6 +23,7 @@ app.use("/api/genres", genres);
 app.use("/api/movies", movies);
 app.use("/api/rentals", rentals);
 app.use("/api/users", users);
+app.use("/api/auth", auth);
 app.use("/", home);
 // app.listen
 // environment viriables
